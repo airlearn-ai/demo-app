@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import '@fontsource/roboto';
 import {
     TextField,
@@ -112,6 +112,7 @@ function CreateMeeting() {
         <Box className="formContainer">
             {isFormHidden ? (
                 <iframe
+                    title={'Meeting'}
                     className="iframe"
                     src={meetingFrameData}
                     allow="camera; microphone; fullscreen; speaker; display-capture"

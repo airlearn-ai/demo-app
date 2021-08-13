@@ -32,7 +32,7 @@ function JoinMeeting() {
                 fullName: 'Moderator User',
                 userId: '123454',
                 meetingId: 'some-meeting-id',
-                "password": "moderatorpassword",
+                password: 'moderatorpassword',
                 type: 'moderator'
             })
         };
@@ -43,14 +43,14 @@ function JoinMeeting() {
         const data = await response.json();
         console.log(data);
         setMeetingFrameData(data.data);
-        setIsFormHidden(true)
+        setIsFormHidden(true);
     }
 
     return (
         <Box className="formContainer">
             {isFormHidden ? (
                 <iframe
-                    title={"Meeting"}
+                    title={'Meeting'}
                     className="iframe"
                     src={meetingFrameData}
                     allow="camera; microphone; fullscreen; speaker; display-capture"
@@ -79,10 +79,17 @@ function JoinMeeting() {
                             type="text"
                             placeholder="Full Name"
                         ></input>{' '} */}
-                        <FormLabel>Enter your full name: </FormLabel><TextField onChange={handleNameChange}
+                        <FormLabel>Enter your full name: </FormLabel>
+                        <TextField
+                            onChange={handleNameChange}
                             name="fullName"
-                            value={fullName} type='text' id="outlined-basic" label="Full Name" variant="outlined" />
-                        <br />                        
+                            value={fullName}
+                            type="text"
+                            id="outlined-basic"
+                            label="Full Name"
+                            variant="outlined"
+                        />
+                        <br />
                         {/* <FormLabel>Enter your meeting name: </FormLabel><TextField type='text' id="outlined-basic" label="Meeting Name" variant="outlined" />*/}
                         <Button
                             color="secondary"
