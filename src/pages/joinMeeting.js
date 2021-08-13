@@ -63,15 +63,16 @@ function JoinMeeting() {
                 ></iframe>
             ) : (
                 <>
-                    <Typography
-                        variant="h2"
-                        color="primary"
-                        component="h3"
-                        gutterBottom
-                    >
-                        Join meeting
-                    </Typography>
-                    <form className="form">
+                    
+                    <form className="form joinMeetingForm">
+                        <Typography
+                            variant="h3"
+                            color="primary"
+                            component="h3"
+                            gutterBottom
+                        >
+                            Join meeting
+                        </Typography>
                         {/* <input
                             onChange={handleNameChange}
                             name="fullName"
@@ -79,7 +80,7 @@ function JoinMeeting() {
                             type="text"
                             placeholder="Full Name"
                         ></input>{' '} */}
-                        <FormLabel>Enter your full name: </FormLabel>
+                        <FormLabel className="label" gutterBottom >Enter your full name: </FormLabel>
                         <TextField
                             onChange={handleNameChange}
                             name="fullName"
@@ -88,6 +89,7 @@ function JoinMeeting() {
                             id="outlined-basic"
                             label="Full Name"
                             variant="outlined"
+                            color="white"
                         />
                         <br />
                         {/* <FormLabel>Enter your meeting name: </FormLabel><TextField type='text' id="outlined-basic" label="Meeting Name" variant="outlined" />*/}

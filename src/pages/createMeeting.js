@@ -7,10 +7,55 @@ import {
     FormLabel,
     Typography,
     Box,
-    TextareaAutosize
+    TextareaAutosize,
+    withTheme
 } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core' 
+import { borders } from '@material-ui/system';
+
+
+const useStyles = makeStyles({
+    formContainer: {
+        display: 'grid',
+        height: '100vh',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    label: {
+        fontWeight: 'bold',
+        marginBottom: "-20px",
+        fontSize: "20px"
+    },
+    form: {
+        backgroundColor: "white",
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+        minHeight: '600px',
+        borderWidth: "2",
+        borderColor: "primary.main",
+        padding: '4em',
+        borderRadius: '5%',
+    },
+    clipboard: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        margin: "1em",
+      },
+      
+    clipboardText: {
+        width: '80%'
+    },
+    iframe: {
+        height: '100vh',
+        width: '100vw',
+        overflow: 'hidden',
+    }
+}) 
 
 function CreateMeeting() {
+    const classes = useStyles()
     const [fullName, setFullName] = useState('');
     const [newMeetingId, setNewMeetingId] = useState('');
     const [isFormHidden, setIsFormHidden] = useState(false);
@@ -81,20 +126,7 @@ function CreateMeeting() {
                 name: 'my first meeting',
                 meetingId: 'some-meeting-id',
                 moderatorPass: 'moderatorpassword',
-                attendeePass: 'attendeepassword',
-                logoutUrl: 'https://example.com',
-                logoUrl:
-                    'https://example-bucket.s3.ap-south-1.amazonaws.com/example-logo.png',
-                endMeetingCallbackUrl:
-                    'https://example.com/meetingEnded?meetingId=123&recorded=true',
-                recordingReadyCallbackUrl: 'https://example.com/recordingReady',
-                autoStartRecording: false,
-                documents: [
-                    {
-                        name: 'chapter-one.pdf',
-                        url: 'https://example-bucket.s3.ap-south-1.amazonaws.com/chapter-one.pdf'
-                    }
-                ]
+                attendeePass: 'attendeepassword'
             })
         };
         const response = await fetch(
@@ -109,7 +141,7 @@ function CreateMeeting() {
     };
 
     return (
-        <Box className="formContainer">
+        <Box className={classes.formContainer}>
             {isFormHidden ? (
                 <iframe
                     title={'Meeting'}
@@ -125,19 +157,20 @@ function CreateMeeting() {
                 ></iframe>
             ) : (
                 <>
-                    <Typography
-                        variant="h2"
-                        color="primary"
-                        component="h3"
-                        gutterBottom
-                    >
-                        Start a new meeting
-                    </Typography>
-                    <form className="form">
+                    
+                    <form className={classes.form}>
+                        <Typography
+                            variant="h3"
+                            color="primary"
+                            component="h3"
+                            gutterBottom
+                        >
+                            Start a new meeting
+                        </Typography>
                         {/* <input onChange={handleNameChange} name="fullName" value={fullName} type="text" placeholder="Full Name"></input> <br />
                 <input onChange={handleMeetingChange} name="newMeetingId" value={newMeetingId} type="text" placeholder="Meeting id"></input><br />   */}
 
-                        <FormLabel>Enter your full name: </FormLabel>
+                        <FormLabel className={classes.label} fontWeight={900}  gutterBottom >Enter your full name: </FormLabel>
                         <TextField
                             type="text"
                             onChange={handleNameChange}
@@ -147,7 +180,7 @@ function CreateMeeting() {
                             label="Full Name"
                             variant="outlined"
                         />
-                        <FormLabel>Enter your meeting name: </FormLabel>
+                        <FormLabel className={classes.label} gutterBottom>Enter your meeting name:</FormLabel>
                         <TextField
                             type="text"
                             onChange={handleMeetingChange}
@@ -162,16 +195,20 @@ function CreateMeeting() {
                             <div>
                                 <Typography>Share this link:</Typography>
                                 <br />
-                                <TextareaAutosize
-                                    aria-label="minimum height"
-                                    minRows={2}
-                                    ref={textAreaRef}
-                                    value={link}
-                                />
-                                <br />
-                                <Button onClick={copyToClipboard}>
-                                    {copySuccess ? copySuccess : 'Copy'}
-                                </Button>
+                                <FormLabel className={classes.clipboard}>
+                                    <TextareaAutosize
+                                        className="clipboardText" 
+                                        aria-label="minimum height" 
+                                        minRows={2}
+                                        ref={textAreaRef}
+                                        value={link}
+                                    />
+                                
+                                    <Button onClick={copyToClipboard}>
+                                        {copySuccess ? copySuccess : 'Copy'}
+                                    </Button>
+                                </FormLabel>
+                                
                             </div>
                         )}
                         <Button
