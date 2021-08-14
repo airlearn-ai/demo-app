@@ -7,17 +7,20 @@ import {
     Typography,
     Box
 } from '@material-ui/core';
+import { CLIENT, API_JOIN_URL, MEETING_URL, TYPE } from '../config';
 
 function JoinMeeting() {
     const [meetingFrameData, setMeetingFrameData] = useState('');
+    const [userId, setUserId] = useState('');
     const [fullName, setFullName] = useState('');
     const [isFormHidden, setIsFormHidden] = useState(false);
     let name = '';
 
     const handleNameChange = (e) => {
         const { value } = e.target;
+        setFullName(value);
         name = value.split(' ').join('-');
-        setFullName(name);
+        setUserId(name);
     };
 
     async function joinMeetingFunction() {
@@ -25,21 +28,17 @@ function JoinMeeting() {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'client-id': 'airlearn',
-                'client-secret': 'airlearn'
+                'client-id': CLIENT.ID,
+                'client-secret': CLIENT.SECRET
             },
             body: JSON.stringify({
-                fullName: 'Moderator User',
-                userId: '123454',
-                meetingId: 'some-meeting-id',
-                password: 'moderatorpassword',
-                type: 'moderator'
+                fullName: fullName,
+                userId: userId,
+                meetingId: MEETING_URL,
+                type: TYPE.NORMAL
             })
         };
-        const response = await fetch(
-            'https://beta-ams-lb.airlearn.ai/api/joinMeeting',
-            requestJoinMeeting
-        );
+        const response = await fetch(API_JOIN_URL, requestJoinMeeting);
         const data = await response.json();
         console.log(data);
         setMeetingFrameData(data.data);
@@ -50,7 +49,7 @@ function JoinMeeting() {
         <Box className="formContainer">
             {isFormHidden ? (
                 <iframe
-                    title={'Meeting'}
+                    title="Meeting"
                     className="iframe"
                     src={meetingFrameData}
                     allow="camera; microphone; fullscreen; speaker; display-capture"
@@ -62,46 +61,37 @@ function JoinMeeting() {
                     frameborder="0"
                 ></iframe>
             ) : (
-                <>
-                    
-                    <form className="form joinMeetingForm">
-                        <Typography
-                            variant="h3"
-                            color="primary"
-                            component="h3"
-                            gutterBottom
-                        >
-                            Join meeting
-                        </Typography>
-                        {/* <input
-                            onChange={handleNameChange}
-                            name="fullName"
-                            value={fullName}
-                            type="text"
-                            placeholder="Full Name"
-                        ></input>{' '} */}
-                        <FormLabel className="label" gutterBottom >Enter your full name: </FormLabel>
-                        <TextField
-                            onChange={handleNameChange}
-                            name="fullName"
-                            value={fullName}
-                            type="text"
-                            id="outlined-basic"
-                            label="Full Name"
-                            variant="outlined"
-                            color="white"
-                        />
-                        <br />
-                        {/* <FormLabel>Enter your meeting name: </FormLabel><TextField type='text' id="outlined-basic" label="Meeting Name" variant="outlined" />*/}
-                        <Button
-                            color="secondary"
-                            variant="contained"
-                            onClick={joinMeetingFunction}
-                        >
-                            Join Meeting
-                        </Button>
-                    </form>
-                </>
+                <form className="form joinMeetingForm">
+                    <Typography
+                        variant="h3"
+                        color="primary"
+                        component="h3"
+                        gutterBottom
+                    >
+                        Join meeting
+                    </Typography>
+                    <FormLabel className="label">
+                        Enter your full name:{' '}
+                    </FormLabel>
+                    <TextField
+                        onChange={handleNameChange}
+                        name="fullName"
+                        value={fullName}
+                        type="text"
+                        id="outlined-basic"
+                        label="Full Name"
+                        variant="outlined"
+                        color="white"
+                    />
+                    <br />
+                    <Button
+                        color="secondary"
+                        variant="contained"
+                        onClick={joinMeetingFunction}
+                    >
+                        Join Meeting
+                    </Button>
+                </form>
             )}
         </Box>
     );

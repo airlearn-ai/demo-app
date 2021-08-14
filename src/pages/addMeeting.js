@@ -7,12 +7,10 @@ import {
     FormLabel,
     Typography,
     Box,
-    TextareaAutosize,
-    withTheme
+    TextareaAutosize
 } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core' 
-import { borders } from '@material-ui/system';
-
+import { makeStyles } from '@material-ui/core';
+import { CLIENT, API_CREATE_URL, API_JOIN_URL, TYPE } from '../config';
 
 const useStyles = makeStyles({
     formContainer: {
@@ -20,43 +18,47 @@ const useStyles = makeStyles({
         height: '100vh',
         justifyContent: 'center',
         alignItems: 'center',
+        backgroundColor: '#141518'
     },
     label: {
         fontWeight: 'bold',
-        marginBottom: "-20px",
-        fontSize: "20px"
+        marginBottom: '-20px',
+        fontSize: '20px'
     },
     form: {
-        backgroundColor: "white",
+        backgroundColor: 'rgba(220, 221, 224, 1)',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
         minHeight: '600px',
-        borderWidth: "2",
-        borderColor: "primary.main",
+        border: '1px solid #141518',
         padding: '4em',
-        borderRadius: '5%',
+        borderRadius: '2%'
     },
     clipboard: {
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between',
-        margin: "1em",
-      },
-      
+        margin: '1em'
+    },
+
     clipboardText: {
         width: '80%'
     },
+
+    TextField: {},
+
     iframe: {
         height: '100vh',
         width: '100vw',
-        overflow: 'hidden',
+        overflow: 'hidden'
     }
-}) 
+});
 
 function CreateMeeting() {
-    const classes = useStyles()
+    const classes = useStyles();
     const [fullName, setFullName] = useState('');
+    const [userId, setUserId] = useState('');
     const [newMeetingId, setNewMeetingId] = useState('');
     const [isFormHidden, setIsFormHidden] = useState(false);
     const [meetingFrameData, setMeetingFrameData] = useState('');
@@ -77,7 +79,8 @@ function CreateMeeting() {
     const handleNameChange = (e) => {
         const { value } = e.target;
         name = value.split(' ').join('-');
-        setFullName(name);
+        setFullName(value)
+        setUserId(name);
     };
 
     const handleMeetingChange = (e) => {
@@ -92,20 +95,17 @@ function CreateMeeting() {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'client-id': 'airlearn',
-                'client-secret': 'airlearn'
+                'client-id': CLIENT.ID,
+                'client-secret': CLIENT.SECRET
             },
             body: JSON.stringify({
-                fullName: 'Moderator User',
-                userId: '123454',
-                meetingId: 'some-meeting-id',
-                password: 'moderatorpassword'
+                fullName: fullName,
+                userId: userId,
+                meetingId: newMeetingId,
+                type: TYPE.MODERATOR
             })
         };
-        const response = await fetch(
-            'https://beta-ams-lb.airlearn.ai/api/joinMeeting',
-            requestJoinMeeting
-        );
+        const response = await fetch(API_JOIN_URL, requestJoinMeeting);
         const data = await response.json();
         console.log(data.data);
         setMeetingFrameData(data.data);
@@ -117,22 +117,15 @@ function CreateMeeting() {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'client-id': 'airlearn',
-                'client-secret': 'airlearn'
+                'client-id': CLIENT.ID,
+                'client-secret': CLIENT.SECRET
             },
             body: JSON.stringify({
-                // name: {name},
-                // meetingId: {newMeetingId},
-                name: 'my first meeting',
-                meetingId: 'some-meeting-id',
-                moderatorPass: 'moderatorpassword',
-                attendeePass: 'attendeepassword'
+                name: fullName,
+                meetingId: newMeetingId
             })
         };
-        const response = await fetch(
-            'https://beta-ams-lb.airlearn.ai/api/createMeeting',
-            requestMeeting
-        );
+        const response = await fetch(API_CREATE_URL, requestMeeting);
         const data = await response.json();
         console.log(data);
         setMeetingFrameData(data.data);
@@ -144,7 +137,7 @@ function CreateMeeting() {
         <Box className={classes.formContainer}>
             {isFormHidden ? (
                 <iframe
-                    title={'Meeting'}
+                    title="Meeting"
                     className="iframe"
                     src={meetingFrameData}
                     allow="camera; microphone; fullscreen; speaker; display-capture"
@@ -157,7 +150,6 @@ function CreateMeeting() {
                 ></iframe>
             ) : (
                 <>
-                    
                     <form className={classes.form}>
                         <Typography
                             variant="h3"
@@ -167,20 +159,26 @@ function CreateMeeting() {
                         >
                             Start a new meeting
                         </Typography>
-                        {/* <input onChange={handleNameChange} name="fullName" value={fullName} type="text" placeholder="Full Name"></input> <br />
-                <input onChange={handleMeetingChange} name="newMeetingId" value={newMeetingId} type="text" placeholder="Meeting id"></input><br />   */}
 
-                        <FormLabel className={classes.label} fontWeight={900}  gutterBottom >Enter your full name: </FormLabel>
+                        <FormLabel
+                            className={classes.label}
+                            fontWeight={900}
+                        >
+                            Enter your full name:{' '}
+                        </FormLabel>
                         <TextField
                             type="text"
                             onChange={handleNameChange}
-                            name="fullName"
+                            name='fullName'
                             value={fullName}
                             id="outlined-basic"
                             label="Full Name"
                             variant="outlined"
+                            color="secondary"
                         />
-                        <FormLabel className={classes.label} gutterBottom>Enter your meeting name:</FormLabel>
+                        <FormLabel className={classes.label} >
+                            Enter your meeting name:
+                        </FormLabel>
                         <TextField
                             type="text"
                             onChange={handleMeetingChange}
@@ -197,18 +195,17 @@ function CreateMeeting() {
                                 <br />
                                 <FormLabel className={classes.clipboard}>
                                     <TextareaAutosize
-                                        className="clipboardText" 
-                                        aria-label="minimum height" 
+                                        className="clipboardText"
+                                        aria-label="minimum height"
                                         minRows={2}
                                         ref={textAreaRef}
                                         value={link}
                                     />
-                                
+
                                     <Button onClick={copyToClipboard}>
                                         {copySuccess ? copySuccess : 'Copy'}
                                     </Button>
                                 </FormLabel>
-                                
                             </div>
                         )}
                         <Button
@@ -220,13 +217,6 @@ function CreateMeeting() {
                             Create Meeting
                         </Button>
                         <br />
-                        {/* <Link to="/joinMeeting"></Link>
-                        <Button
-                            color="secondary"
-                            variant="contained"
-                        >
-                            Join Meeting
-                        </Button>                         */}
                     </form>
                 </>
             )}

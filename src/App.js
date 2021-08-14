@@ -1,10 +1,8 @@
-import logo from './logo.svg';
 import './App.css';
-import CreateMeeting from './pages/createMeeting';
+import CreateMeeting from './pages/addMeeting';
 import JoinMeeting from './pages/joinMeeting';
-import { Link, Switch, Route } from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom';
 import './index.css';
-import { Typography, Button } from '@material-ui/core';
 
 function App() {
     return (
@@ -12,8 +10,8 @@ function App() {
             <Switch>
                 <Route exact path="/">
                     <CreateMeeting />
-                </Route>
-                <Route path="/joinMeeting">
+                </Route>                           
+                <Route exact path="/n/:meetingId">
                     <JoinMeeting />
                 </Route>
             </Switch>
