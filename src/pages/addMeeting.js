@@ -3,7 +3,6 @@ import '@fontsource/roboto';
 import {
     TextField,
     Button,
-    form,
     FormLabel,
     Typography,
     Box,
@@ -107,7 +106,6 @@ function CreateMeeting() {
         };
         const response = await fetch(API_JOIN_URL, requestJoinMeeting);
         const data = await response.json();
-        console.log(data.data);
         setMeetingFrameData(data.data);
     };
 
@@ -128,7 +126,6 @@ function CreateMeeting() {
         const response = await fetch(API_CREATE_URL, requestMeeting);
         const data = await response.json();
         console.log(data);
-        setMeetingFrameData(data.data);
         joinMeeting();
         setIsFormHidden(true);
     };
