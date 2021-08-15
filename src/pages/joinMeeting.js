@@ -7,32 +7,60 @@ import {
     FormLabel,
     Typography,
     Box,
+    Grid
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core';
 import { CLIENT, API_JOIN_URL, TYPE } from '../config';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
     formContainer: {
         display: 'grid',
-        height: '100vh',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#141518'
+        height: '100vh',
+        backgroundColor: '#141518',
+        [theme.breakpoints.down('xs')]: {
+            backgroundColor: 'white'
+        }
     },
-    label: {
-        fontWeight: 'bold',
-        marginBottom: '-20px',
-        fontSize: '20px'
+    containerForm: {
+        display: 'grid',
+        justifyContent: 'center',
+        alignItems: 'center',
+        [theme.breakpoints.down('xs')]: {
+            height: '100vh',
+            overflow: 'hidden',
+            padding: '0'
+        }
     },
     form: {
-        backgroundColor: 'rgba(220, 221, 224, 1)',
+        backgroundColor: 'white',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
-        minHeight: '600px',
-        border: '1px solid #141518',
-        padding: '4em',
-        borderRadius: '2%'
+        minHeight: '450px',
+        minWidth: '450px',
+        padding: '4em 4em 6em',
+        borderRadius: '1%',
+
+        [theme.breakpoints.down('xs')]: {
+            minWidth: '280px'
+        }
+    },
+    label: {
+        fontWeight: '500',
+        margin: '10px 0 20px',
+        fontSize: '20px',
+        color: 'black',
+        [theme.breakpoints.down('sm')]: {
+            marginBottom: '10px',
+            fontSize: '14px'
+        }
+    },
+    heading: {
+        [theme.breakpoints.down('sm')]: {
+            fontSize: '32px'
+        }
     },
 
     iframe: {
@@ -40,7 +68,7 @@ const useStyles = makeStyles({
         width: '100vw',
         overflow: 'hidden'
     }
-});
+}));
 
 function JoinMeeting() {
     const classes = useStyles();
@@ -59,15 +87,13 @@ function JoinMeeting() {
     };
 
     const getMeetingId = () => {
-        const path = window.location.href
+        const path = window.location.href;
         meetingId = path.substring(path.lastIndexOf('/') + 1);
-        return meetingId
-        
-    }
-    getMeetingId()
-    
+        return meetingId;
+    };
+    getMeetingId();
+
     async function joinMeetingFunction() {
-        
         const requestJoinMeeting = {
             method: 'POST',
             headers: {
@@ -78,13 +104,11 @@ function JoinMeeting() {
             body: JSON.stringify({
                 fullName: fullName,
                 userId: userId,
-                meetingId: meetingId,   
+                meetingId: meetingId,
                 type: TYPE.NORMAL
             })
         };
-        
-        
-        
+
         const response = await fetch(API_JOIN_URL, requestJoinMeeting);
         const data = await response.json();
         setMeetingFrameData(data.data);
@@ -107,36 +131,67 @@ function JoinMeeting() {
                     frameborder="0"
                 ></iframe>
             ) : (
-                <form className={classes.form}>
-                    <Typography
-                        variant="h3"
-                        color="primary"
-                        component="h3"
-                        gutterBottom
+                <form className={classes.containerForm}>
+                    <Grid
+                        className={classes.form}
+                        container
+                        direction="column"
+                        spacing={0}
                     >
-                        Join meeting
-                    </Typography>
-                    <FormLabel className={classes.label}>
-                        Enter your full name:{' '}
-                    </FormLabel>
-                    <TextField
-                        onChange={handleNameChange}
-                        name="fullName"
-                        value={fullName}
-                        type="text"
-                        id="outlined-basic"
-                        label="Full Name"
-                        variant="outlined"
-                        color="white"
-                    />
-                    <br />
-                    <Button
-                        color="secondary"
-                        variant="contained"
-                        onClick={joinMeetingFunction}
-                    >
-                        Join Meeting
-                    </Button>
+                        <Grid
+                            container
+                            item
+                            xs={12}
+                            direction="column"
+                            spacing={0}
+                        >
+                            <Typography
+                                variant="h4"
+                                color="secondary"
+                                component="h4"
+                                className={classes.heading}
+                            >
+                                Join meeting
+                            </Typography>
+                        </Grid>
+                        <Grid
+                            container
+                            item
+                            xs={12}
+                            direction="column"
+                            spacing={0}
+                        >
+                            <FormLabel className={classes.label}>
+                                Enter your full name:{' '}
+                            </FormLabel>
+                            <TextField
+                                onChange={handleNameChange}
+                                name="fullName"
+                                value={fullName}
+                                type="text"
+                                id="outlined-basic"
+                                label="Full Name"
+                                variant="outlined"
+                                color="secondary"
+                                size="small"
+                            />
+                        </Grid>
+                        <Grid
+                            container
+                            item
+                            xs={12}
+                            direction="column"
+                            spacing={0}
+                        >
+                            <Button
+                                color="secondary"
+                                variant="contained"
+                                onClick={joinMeetingFunction}
+                            >
+                                Join Meeting
+                            </Button>
+                        </Grid>
+                    </Grid>
                 </form>
             )}
         </Box>

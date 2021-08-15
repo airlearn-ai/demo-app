@@ -6,53 +6,81 @@ import {
     FormLabel,
     Typography,
     Box,
-    TextareaAutosize
+    TextareaAutosize,
+    Grid
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core';
 import { CLIENT, API_CREATE_URL, API_JOIN_URL, TYPE } from '../config';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
     formContainer: {
         display: 'grid',
-        height: '100vh',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#141518'
+        height: '100vh',
+        backgroundColor: '#141518',
+        [theme.breakpoints.down('xs')]: {
+            backgroundColor: 'white'
+        }
     },
-    label: {
-        fontWeight: 'bold',
-        marginBottom: '-20px',
-        fontSize: '20px'
+    containerForm: {
+        display: 'grid',
+        justifyContent: 'center',
+        alignItems: 'center',
+        [theme.breakpoints.down('xs')]: {
+            height: '100vh',
+            overflow: 'hidden',
+            padding: '0'
+        }
     },
     form: {
-        backgroundColor: 'rgba(220, 221, 224, 1)',
+        backgroundColor: 'white',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
-        minHeight: '600px',
-        border: '1px solid #141518',
-        padding: '4em',
-        borderRadius: '2%'
+        minHeight: '650px',
+        minWidth: '450px',
+        padding: '4em 4em 6em',
+        borderRadius: '1%',
+
+        [theme.breakpoints.down('xs')]: {
+            minWidth: '280px'
+        }
     },
+    label: {
+        fontWeight: '500',
+        margin: '10px 0 20px',
+        fontSize: '20px',
+        color: 'black',
+        [theme.breakpoints.down('sm')]: {
+            marginBottom: '10px',
+            fontSize: '14px'
+        }
+    },
+
+    heading: {
+        [theme.breakpoints.down('sm')]: {
+            fontSize: '20px'
+        }
+    },
+
     clipboard: {
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between',
-        margin: '1em'
+        margin: '1em auto'
     },
 
     clipboardText: {
         width: '80%'
     },
 
-    TextField: {},
-
     iframe: {
         height: '100vh',
         width: '100vw',
         overflow: 'hidden'
     }
-});
+}));
 
 function CreateMeeting() {
     const classes = useStyles();
@@ -78,7 +106,7 @@ function CreateMeeting() {
     const handleNameChange = (e) => {
         const { value } = e.target;
         name = value.split(' ').join('-');
-        setFullName(value)
+        setFullName(value);
         setUserId(name);
     };
 
@@ -147,73 +175,125 @@ function CreateMeeting() {
                 ></iframe>
             ) : (
                 <>
-                    <form className={classes.form}>
-                        <Typography
-                            variant="h3"
-                            color="primary"
-                            component="h3"
-                            gutterBottom
+                    <form className={classes.containerForm}>
+                        <Grid
+                            container
+                            direction="column"
+                            spacing={0}
+                            className={classes.form}
                         >
-                            Start a new meeting
-                        </Typography>
-
-                        <FormLabel
-                            className={classes.label}
-                            fontWeight={900}
-                        >
-                            Enter your full name:{' '}
-                        </FormLabel>
-                        <TextField
-                            type="text"
-                            onChange={handleNameChange}
-                            name='fullName'
-                            value={fullName}
-                            id="outlined-basic"
-                            label="Full Name"
-                            variant="outlined"
-                            color="secondary"
-                        />
-                        <FormLabel className={classes.label} >
-                            Enter your meeting name:
-                        </FormLabel>
-                        <TextField
-                            type="text"
-                            onChange={handleMeetingChange}
-                            name="newMeetingId"
-                            value={newMeetingId}
-                            id="outlined-basic"
-                            label="Meeting Name"
-                            variant="outlined"
-                            nowrap="false"
-                        />
-                        {newMeetingId && (
-                            <div>
-                                <Typography>Share this link:</Typography>
-                                <br />
-                                <FormLabel className={classes.clipboard}>
-                                    <TextareaAutosize
-                                        className="clipboardText"
-                                        aria-label="minimum height"
-                                        minRows={2}
-                                        ref={textAreaRef}
-                                        value={link}
-                                    />
-
-                                    <Button onClick={copyToClipboard}>
-                                        {copySuccess ? copySuccess : 'Copy'}
-                                    </Button>
+                            <Grid
+                                container
+                                item
+                                xs={12}
+                                direction="column"
+                                spacing={0}
+                            >
+                                <Typography
+                                    variant="h4"
+                                    color="secondary"
+                                    component="h4"
+                                    className={classes.heading}
+                                >
+                                    Start a new meeting
+                                </Typography>
+                            </Grid>
+                            <Grid
+                                container
+                                item
+                                xs={12}
+                                direction="column"
+                                spacing={3}
+                            >
+                                <FormLabel className={classes.label}>
+                                    Enter your full name:{' '}
                                 </FormLabel>
-                            </div>
-                        )}
-                        <Button
-                            color="secondary"
-                            variant="contained"
-                            type="submit"
-                            onClick={createMeetingFunction}
-                        >
-                            Create Meeting
-                        </Button>
-                        <br />
+                                <TextField
+                                    type="text"
+                                    onChange={handleNameChange}
+                                    name="fullName"
+                                    value={fullName}
+                                    id="outlined-basic"
+                                    label="Full Name"
+                                    variant="outlined"
+                                    color="secondary"
+                                    size="small"
+                                />
+                            </Grid>
+                            <Grid
+                                container
+                                item
+                                xs={12}
+                                direction="column"
+                                spacing={3}
+                            >
+                                <FormLabel className={classes.label}>
+                                    Enter your meeting name:
+                                </FormLabel>
+                                <TextField
+                                    type="text"
+                                    onChange={handleMeetingChange}
+                                    name="newMeetingId"
+                                    value={newMeetingId}
+                                    id="outlined-basic"
+                                    label="Meeting Name"
+                                    variant="outlined"
+                                    nowrap="false"
+                                    size="small"
+                                    className={classes.TextField}
+                                />
+                            </Grid>
+                            <Grid
+                                container
+                                item
+                                xs={12}
+                                direction="column"
+                                spacing={3}
+                            >
+                                {newMeetingId && (
+                                    <div>
+                                        <Typography>
+                                            Share this link:
+                                        </Typography>
+                                        {/* <br /> */}
+                                        <FormLabel
+                                            className={classes.clipboard}
+                                        >
+                                            <TextareaAutosize
+                                                className="clipboardText"
+                                                aria-label="minimum height"
+                                                minRows={2}
+                                                ref={textAreaRef}
+                                                value={link}
+                                            />
+
+                                            <Button onClick={copyToClipboard}>
+                                                {copySuccess
+                                                    ? copySuccess
+                                                    : 'Copy'}
+                                            </Button>
+                                        </FormLabel>
+                                    </div>
+                                )}
+                            </Grid>
+
+                            <Grid 
+                                container
+                                item
+                                xs={12}
+                                direction="column"
+                                spacing={3}
+                            >
+                                <Button
+                                    color="secondary"
+                                    variant="contained"
+                                    type="submit"
+                                    onClick={createMeetingFunction}
+                                >
+                                    Create Meeting
+                                </Button>
+                            </Grid>
+                        </Grid>
                     </form>
                 </>
             )}
