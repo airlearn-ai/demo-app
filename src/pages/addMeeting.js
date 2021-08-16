@@ -1,5 +1,4 @@
 import React, { useState, useRef } from 'react';
-import '@fontsource/roboto';
 import {
     TextField,
     Button,
@@ -10,7 +9,7 @@ import {
     Grid
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core';
-import { CLIENT, API_CREATE_URL, API_JOIN_URL, TYPE } from '../config';
+import { CLIENT, LOAD_BALANCER_URL, TYPE } from '../config';
 
 const useStyles = makeStyles((theme) => ({
     formContainer: {
@@ -79,6 +78,9 @@ const useStyles = makeStyles((theme) => ({
         height: '100vh',
         width: '100vw',
         overflow: 'hidden'
+    },
+    button: {
+        fontWeight: 'bold'
     }
 }));
 
@@ -93,7 +95,7 @@ function CreateMeeting() {
     const [link, setLink] = useState('');
     const textAreaRef = useRef(null);
 
-    let name = '';
+
     let meetId = '';
 
     const copyToClipboard = (e) => {
@@ -105,9 +107,8 @@ function CreateMeeting() {
 
     const handleNameChange = (e) => {
         const { value } = e.target;
-        name = value.split(' ').join('-');
         setFullName(value);
-        setUserId(name);
+        setUserId(value.split(' ').join('-'));
     };
 
     const handleMeetingChange = (e) => {
@@ -132,7 +133,7 @@ function CreateMeeting() {
                 type: TYPE.MODERATOR
             })
         };
-        const response = await fetch(API_JOIN_URL, requestJoinMeeting);
+        const response = await fetch(`${LOAD_BALANCER_URL}/api/joinMeeting`, requestJoinMeeting);
         const data = await response.json();
         setMeetingFrameData(data.data);
     };
@@ -151,9 +152,8 @@ function CreateMeeting() {
                 meetingId: newMeetingId
             })
         };
-        const response = await fetch(API_CREATE_URL, requestMeeting);
+        const response = await fetch(`${LOAD_BALANCER_URL}/api/createMeeting`, requestMeeting);
         const data = await response.json();
-        console.log(data);
         joinMeeting();
         setIsFormHidden(true);
     };
@@ -289,8 +289,9 @@ function CreateMeeting() {
                                     variant="contained"
                                     type="submit"
                                     onClick={createMeetingFunction}
+                                    className={classes.button}
                                 >
-                                    Create Meeting
+                                    Start Meeting
                                 </Button>
                             </Grid>
                         </Grid>

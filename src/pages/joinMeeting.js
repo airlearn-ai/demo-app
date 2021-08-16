@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../index.css';
 import '@fontsource/roboto';
 import {
@@ -10,7 +10,7 @@ import {
     Grid
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core';
-import { CLIENT, API_JOIN_URL, TYPE } from '../config';
+import { CLIENT, LOAD_BALANCER_URL, TYPE } from '../config';
 
 const useStyles = makeStyles((theme) => ({
     formContainer: {
@@ -67,32 +67,32 @@ const useStyles = makeStyles((theme) => ({
         height: '100vh',
         width: '100vw',
         overflow: 'hidden'
+    },
+    button: {
+        fontWeight: 'bold'
     }
 }));
 
-function JoinMeeting() {
+
+function JoinMeeting(props) {
     const classes = useStyles();
     const [meetingFrameData, setMeetingFrameData] = useState('');
     const [userId, setUserId] = useState('');
     const [fullName, setFullName] = useState('');
     const [isFormHidden, setIsFormHidden] = useState(false);
-    let name = '';
-    let meetingId = '';
+    const [meetingId, setMeetingId] = useState('');
 
     const handleNameChange = (e) => {
         const { value } = e.target;
         setFullName(value);
-        name = value.split(' ').join('-');
-        setUserId(name);
+        setUserId(value.split(' ').join('-'));
     };
 
-    const getMeetingId = () => {
-        const path = window.location.href;
-        meetingId = path.substring(path.lastIndexOf('/') + 1);
-        return meetingId;
-    };
-    getMeetingId();
-
+    useEffect(() => {
+        const path = props.location.pathname;
+        setMeetingId(path.substring(3))
+    }, [])
+    
     async function joinMeetingFunction() {
         const requestJoinMeeting = {
             method: 'POST',
@@ -109,7 +109,7 @@ function JoinMeeting() {
             })
         };
 
-        const response = await fetch(API_JOIN_URL, requestJoinMeeting);
+        const response = await fetch(`${LOAD_BALANCER_URL}/api/joinMeeting`, requestJoinMeeting);
         const data = await response.json();
         setMeetingFrameData(data.data);
         setIsFormHidden(true);
@@ -187,6 +187,7 @@ function JoinMeeting() {
                                 color="secondary"
                                 variant="contained"
                                 onClick={joinMeetingFunction}
+                                className={classes.button}
                             >
                                 Join Meeting
                             </Button>
