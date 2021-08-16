@@ -1,4 +1,4 @@
-const LOAD_BALANCER_URL = 'https://beta-ams-lb.airlearn.ai'
+const LOAD_BALANCER_URL = 'http://localhost:3001'
 
 
 const CLIENT = {

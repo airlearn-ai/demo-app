@@ -108,11 +108,18 @@ function JoinMeeting(props) {
                 type: TYPE.NORMAL
             })
         };
-
-        const response = await fetch(`${LOAD_BALANCER_URL}/api/joinMeeting`, requestJoinMeeting);
-        const data = await response.json();
-        setMeetingFrameData(data.data);
-        setIsFormHidden(true);
+        if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
+            const response = await fetch(`${LOAD_BALANCER_URL}/api/joinMeeting`, requestJoinMeeting);
+            const data = await response.json();
+            setMeetingFrameData(data.data);
+            setIsFormHidden(true);
+        } else {
+            // update with 'https'
+            const response = await fetch(`http://${window.location.host}/api/joinMeeting`, requestJoinMeeting);
+            const data = await response.json();
+            setMeetingFrameData(data.data);
+            setIsFormHidden(true);
+        }
     }
 
     return (
