@@ -1,0 +1,19 @@
+{
+    "compilerOptions": {
+        "sourceMap": true,
+        "target": "es5",
+        "outDir": "./build",
+        "baseUrl": "./src",
+        "alwaysStrict": true,
+        "noImplicitAny": true,
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "allowSyntheticDefaultImports": true,
+        "moduleResolution": "node",
+        "typeRoots": ["./node_modules/@types"],
+        "resolveJsonModule": true,
+        "types": ["jest", "node"]
+    },
+    "include": ["src/**/*.ts"],
+    "exclude": ["node_modules"]
+}
