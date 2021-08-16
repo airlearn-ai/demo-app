@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import {useRouteMatch} from 'react-router-dom'
 import '../index.css';
 import '@fontsource/roboto';
 import {
@@ -76,12 +77,14 @@ const useStyles = makeStyles((theme) => ({
 
 function JoinMeeting(props) {
     const classes = useStyles();
+    const params = useRouteMatch();
     const [meetingFrameData, setMeetingFrameData] = useState('');
     const [userId, setUserId] = useState('');
     const [fullName, setFullName] = useState('');
     const [isFormHidden, setIsFormHidden] = useState(false);
     const [meetingId, setMeetingId] = useState('');
 
+    
     const handleNameChange = (e) => {
         const { value } = e.target;
         setFullName(value);
@@ -89,7 +92,7 @@ function JoinMeeting(props) {
     };
 
     useEffect(() => {
-        const path = props.location.pathname;
+        const path = params.url
         setMeetingId(path.substring(3))
     }, [])
     

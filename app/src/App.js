@@ -11,7 +11,8 @@ function App() {
                 <Route exact path="/">
                     <CreateMeeting />
                 </Route>                           
-                <Route exact path="/n/:meetingId" component={JoinMeeting} >
+                <Route exact path="/n/:meetingId">
+                    <JoinMeeting />
                 </Route>
             </Switch>
         </div>
