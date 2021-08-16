@@ -2,7 +2,7 @@ body {
     margin: 0;
     padding: 0;
     overflow: hidden;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto',
+    font-family: 'Roboto',
         'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
         'Helvetica Neue', sans-serif;
     -webkit-font-smoothing: antialiased;
@@ -15,35 +15,10 @@ code {
         monospace;
 }
 
-.header {
-    text-align: center;
-}
 .iframe {
     height: 100vh;
     width: 100vw;
     overflow: hidden;
-}
-
-/* .formContainer {
-    display: grid;
-    height: 100vh;
-    justify-content: center;
-    align-items: center;
-} */
-
-/* .form {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    min-height: 600px;
-    border: 2px solid rgb(177, 171, 171);
-    background-color: rgba(255, 255, 255, 1);
-    padding: 4em 10em;
-    border-radius: 5px;
-} */
-
-.joinMeetingForm {
-  min-height: 400px;
 }
 
 

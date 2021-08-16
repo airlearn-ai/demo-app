@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import '../index.css'
 import {
     TextField,
     Button,
@@ -6,10 +7,10 @@ import {
     Typography,
     Box,
     TextareaAutosize,
-    Grid
+    Grid,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core';
-import { CLIENT, LOAD_BALANCER_URL, TYPE } from '../config';
+import { LOAD_BALANCER_URL, TYPE } from '../config';
 
 const useStyles = makeStyles((theme) => ({
     formContainer: {
@@ -58,6 +59,7 @@ const useStyles = makeStyles((theme) => ({
     },
 
     heading: {
+        textAlign: 'center',
         [theme.breakpoints.down('sm')]: {
             fontSize: '20px'
         }
@@ -73,15 +75,13 @@ const useStyles = makeStyles((theme) => ({
     clipboardText: {
         width: '80%'
     },
+    
 
-    iframe: {
-        height: '100vh',
-        width: '100vw',
-        overflow: 'hidden'
-    },
     button: {
         fontWeight: 'bold'
-    }
+    },
+
+    
 }));
 
 function CreateMeeting() {
@@ -123,8 +123,6 @@ function CreateMeeting() {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'client-id': CLIENT.ID,
-                'client-secret': CLIENT.SECRET
             },
             body: JSON.stringify({
                 fullName: fullName,
@@ -136,16 +134,16 @@ function CreateMeeting() {
         const response = await fetch(`${LOAD_BALANCER_URL}/api/joinMeeting`, requestJoinMeeting);
         const data = await response.json();
         setMeetingFrameData(data.data);
+        
     };
 
     const createMeetingFunction = async (e) => {
         e.preventDefault();
+        
         const requestMeeting = {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'client-id': CLIENT.ID,
-                'client-secret': CLIENT.SECRET
             },
             body: JSON.stringify({
                 name: fullName,
@@ -160,6 +158,7 @@ function CreateMeeting() {
 
     return (
         <Box className={classes.formContainer}>
+            
             {isFormHidden ? (
                 <iframe
                     title="Meeting"

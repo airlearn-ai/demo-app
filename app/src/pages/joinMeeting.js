@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {useRouteMatch} from 'react-router-dom'
 import '../index.css';
-import '@fontsource/roboto';
 import {
     TextField,
     Button,
@@ -11,7 +10,7 @@ import {
     Grid
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core';
-import { CLIENT, LOAD_BALANCER_URL, TYPE } from '../config';
+import { LOAD_BALANCER_URL, TYPE } from '../config';
 
 const useStyles = makeStyles((theme) => ({
     formContainer: {
@@ -59,16 +58,12 @@ const useStyles = makeStyles((theme) => ({
         }
     },
     heading: {
+        textAlign: 'center',
         [theme.breakpoints.down('sm')]: {
             fontSize: '32px'
         }
     },
 
-    iframe: {
-        height: '100vh',
-        width: '100vw',
-        overflow: 'hidden'
-    },
     button: {
         fontWeight: 'bold'
     }
@@ -101,8 +96,6 @@ function JoinMeeting(props) {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'client-id': CLIENT.ID,
-                'client-secret': CLIENT.SECRET
             },
             body: JSON.stringify({
                 fullName: fullName,
@@ -123,7 +116,7 @@ function JoinMeeting(props) {
             {isFormHidden ? (
                 <iframe
                     title="Meeting"
-                    className={classes.iframe}
+                    className="iframe"
                     src={meetingFrameData}
                     allow="camera; microphone; fullscreen; speaker; display-capture"
                     allowFullscreen
