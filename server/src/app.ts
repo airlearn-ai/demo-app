@@ -47,7 +47,7 @@ class App {
     }
 
     private initializeMiddlewares() {
-        this.app.use(express.static(path.join(__dirname, "..", "..", "app", "build")));
+        this.app.use(express.static(path.join(__dirname, "..", "..", "..", "..", "app", "build")));
         if (this.env) {
             this.app.use(hpp());
             this.app.use(helmet());
@@ -79,7 +79,7 @@ class App {
 
     private initializeReactRouteHandling() {
         this.app.use('*', (req, res, next) => {
-            res.sendFile(path.join(__dirname, "..", "..", "app", "build", "index.html"));
+            res.sendFile(path.join(__dirname, "..", "..", "..", "..", "app", "build", "index.html"));
         });
     }
 
