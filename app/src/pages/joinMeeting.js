@@ -111,7 +111,7 @@ function JoinMeeting(props) {
             setIsFormHidden(true);
         } else {
             // update with 'https'
-            const response = await fetch(`http://${window.location.host}/api/joinMeeting`, requestJoinMeeting);
+            const response = await fetch(`${window.location.origin}/api/joinMeeting`, requestJoinMeeting);
             const data = await response.json();
             setMeetingFrameData(data.data);
             setIsFormHidden(true);

@@ -137,7 +137,7 @@ function CreateMeeting() {
             setMeetingFrameData(data.data);
         } else {
             // Update with 'https'
-            const response = await fetch(`http://${window.location.host}/api/joinMeeting`, requestJoinMeeting);
+            const response = await fetch(`${window.location.origin}/api/joinMeeting`, requestJoinMeeting);
             const data = await response.json();
             setMeetingFrameData(data.data);
         }
@@ -164,7 +164,7 @@ function CreateMeeting() {
             setIsFormHidden(true);
         } else {
             // Update with 'https'
-            const response = await fetch(`http://${window.location.host}/api/createMeeting`, requestMeeting);
+            const response = await fetch(`${window.location.origin}/api/createMeeting`, requestMeeting);
             const data = await response.json();
             joinMeeting();
             setIsFormHidden(true);
