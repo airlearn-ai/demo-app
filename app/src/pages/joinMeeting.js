@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {useRouteMatch} from 'react-router-dom'
+import { useRouteMatch } from 'react-router-dom';
 import '../index.css';
 import {
     TextField,
@@ -69,7 +69,6 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-
 function JoinMeeting(props) {
     const classes = useStyles();
     const params = useRouteMatch();
@@ -79,7 +78,6 @@ function JoinMeeting(props) {
     const [isFormHidden, setIsFormHidden] = useState(false);
     const [meetingId, setMeetingId] = useState('');
 
-    
     const handleNameChange = (e) => {
         const { value } = e.target;
         setFullName(value);
@@ -87,15 +85,17 @@ function JoinMeeting(props) {
     };
 
     useEffect(() => {
-        const path = params.url
-        setMeetingId(path.substring(3))
-    }, [])
-    
+        const path = params.url;
+        setMeetingId(path.substring(3));
+    }, []);
+
     async function joinMeetingFunction() {
+        setIsFormHidden(true);
+
         const requestJoinMeeting = {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify({
                 fullName: fullName,
@@ -105,16 +105,22 @@ function JoinMeeting(props) {
             })
         };
         if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
-            const response = await fetch(`${LOAD_BALANCER_URL}/api/joinMeeting`, requestJoinMeeting);
+            const response = await fetch(
+                `${LOAD_BALANCER_URL}/api/joinMeeting`,
+                requestJoinMeeting
+            );
             const data = await response.json();
             setMeetingFrameData(data.data);
-            setIsFormHidden(true);
+            // setIsFormHidden(true);
         } else {
             // update with 'https'
-            const response = await fetch(`${window.location.origin}/api/joinMeeting`, requestJoinMeeting);
+            const response = await fetch(
+                `${window.location.origin}/api/joinMeeting`,
+                requestJoinMeeting
+            );
             const data = await response.json();
             setMeetingFrameData(data.data);
-            setIsFormHidden(true);
+            // setIsFormHidden(true);
         }
     }
 
@@ -189,6 +195,7 @@ function JoinMeeting(props) {
                             <Button
                                 color="secondary"
                                 variant="contained"
+                                type="submit"
                                 onClick={joinMeetingFunction}
                                 className={classes.button}
                             >
