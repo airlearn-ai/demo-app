@@ -1,5 +1,5 @@
-import React, { useState, useRef } from 'react';
-import '../index.css'
+import React, { useState, useRef, useEffect } from 'react';
+import '../index.css';
 import {
     TextField,
     Button,
@@ -7,7 +7,7 @@ import {
     Typography,
     Box,
     TextareaAutosize,
-    Grid,
+    Grid
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core';
 import { LOAD_BALANCER_URL, TYPE } from '../config';
@@ -75,26 +75,25 @@ const useStyles = makeStyles((theme) => ({
     clipboardText: {
         width: '80%'
     },
-    
 
     button: {
         fontWeight: 'bold'
-    },
-
-    
+    }
 }));
 
 function CreateMeeting() {
     const classes = useStyles();
     const [fullName, setFullName] = useState('');
     const [userId, setUserId] = useState('');
+    const [meetingName, setMeetingName] = useState('');
     const [newMeetingId, setNewMeetingId] = useState('');
     const [isFormHidden, setIsFormHidden] = useState(false);
     const [meetingFrameData, setMeetingFrameData] = useState('');
     const [copySuccess, setCopySuccess] = useState('');
     const [link, setLink] = useState('');
     const textAreaRef = useRef(null);
-
+    const buttonRef = useRef(null);
+    const fullNameRef = useRef(null);
 
     let meetId = '';
 
@@ -103,6 +102,7 @@ function CreateMeeting() {
         document.execCommand('copy');
         e.target.focus();
         setCopySuccess('Copied');
+        buttonRef.current.focus();
     };
 
     const handleNameChange = (e) => {
@@ -113,6 +113,7 @@ function CreateMeeting() {
 
     const handleMeetingChange = (e) => {
         const { value } = e.target;
+        setMeetingName(value);
         meetId = value.split(' ').join('-');
         setNewMeetingId(meetId);
         setLink(`${window.location.origin}/n/${meetId}`);
@@ -122,7 +123,7 @@ function CreateMeeting() {
         const requestJoinMeeting = {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify({
                 fullName: fullName,
@@ -132,49 +133,60 @@ function CreateMeeting() {
             })
         };
         if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
-            const response = await fetch(`${LOAD_BALANCER_URL}/api/joinMeeting`, requestJoinMeeting);
+            const response = await fetch(
+                `${LOAD_BALANCER_URL}/api/joinMeeting`,
+                requestJoinMeeting
+            );
             const data = await response.json();
             setMeetingFrameData(data.data);
         } else {
             // Update with 'https'
-            const response = await fetch(`${window.location.origin}/api/joinMeeting`, requestJoinMeeting);
+            const response = await fetch(
+                `${window.location.origin}/api/joinMeeting`,
+                requestJoinMeeting
+            );
             const data = await response.json();
             setMeetingFrameData(data.data);
         }
-        
     };
 
     const createMeetingFunction = async (e) => {
         e.preventDefault();
-        
+
         const requestMeeting = {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                name: fullName,
+                name: meetingName,
                 meetingId: newMeetingId
             })
         };
         if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
-            const response = await fetch(`${LOAD_BALANCER_URL}/api/createMeeting`, requestMeeting);
+            const response = await fetch(
+                `${LOAD_BALANCER_URL}/api/createMeeting`,
+                requestMeeting
+            );
             const data = await response.json();
             joinMeeting();
             setIsFormHidden(true);
         } else {
             // Update with 'https'
-            const response = await fetch(`${window.location.origin}/api/createMeeting`, requestMeeting);
+            const response = await fetch(
+                `${window.location.origin}/api/createMeeting`,
+                requestMeeting
+            );
             const data = await response.json();
             joinMeeting();
             setIsFormHidden(true);
         }
-        
     };
-
+    useEffect(() => {
+        fullNameRef.current.focus();
+    }, []);
     return (
         <Box className={classes.formContainer}>
-            
             {isFormHidden ? (
                 <iframe
                     title="Meeting"
@@ -233,6 +245,7 @@ function CreateMeeting() {
                                     variant="outlined"
                                     color="secondary"
                                     size="small"
+                                    ref={fullNameRef}
                                 />
                             </Grid>
                             <Grid
@@ -292,7 +305,7 @@ function CreateMeeting() {
                                 )}
                             </Grid>
 
-                            <Grid 
+                            <Grid
                                 container
                                 item
                                 xs={12}
@@ -305,6 +318,7 @@ function CreateMeeting() {
                                     type="submit"
                                     onClick={createMeetingFunction}
                                     className={classes.button}
+                                    ref={buttonRef}
                                 >
                                     Start Meeting
                                 </Button>
