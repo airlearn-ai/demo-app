@@ -5,9 +5,9 @@ function validateEnv() {
         NODE_ENV: str(),
         PORT: port(),
 
-        AMS_URL: str(),
+        TM_API_URL: str(),
         CLIENT_ID: str(),
-        CLIENT_SECRET: str(),
+        AUTH_KEY: str(),
     });
 }
 

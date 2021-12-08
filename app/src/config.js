@@ -1,4 +1,4 @@
-const LOAD_BALANCER_URL = 'http://localhost:3001';
+const LOAD_BALANCER_URL = 'http://localhost:4000';
 
 const TYPE = {
     MODERATOR: 'moderator',
