@@ -18,9 +18,9 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: 'center',
         alignItems: 'center',
         height: '100vh',
-        backgroundColor: '#141518',
+        backgroundColor: '#E8F1FE',
         [theme.breakpoints.down('xs')]: {
-            backgroundColor: 'white'
+            backgroundColor: '#E8F1FE'
         }
     },
     containerForm: {
@@ -60,6 +60,7 @@ const useStyles = makeStyles((theme) => ({
 
     heading: {
         textAlign: 'center',
+        color: '#1DA1F1',
         [theme.breakpoints.down('sm')]: {
             fontSize: '20px'
         }
@@ -77,7 +78,8 @@ const useStyles = makeStyles((theme) => ({
     },
 
     button: {
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        backgroundColor: '#1DA1F1'
     }
 }));
 
@@ -218,7 +220,7 @@ function CreateMeeting() {
                             >
                                 <Typography
                                     variant="h4"
-                                    color="secondary"
+                                    color="#1DA1F1"
                                     component="h4"
                                     className={classes.heading}
                                 >
@@ -243,7 +245,7 @@ function CreateMeeting() {
                                     id="outlined-basic"
                                     label="Full Name"
                                     variant="outlined"
-                                    color="secondary"
+                                    color="primary"
                                     size="small"
                                     ref={fullNameRef}
                                 />
@@ -268,6 +270,7 @@ function CreateMeeting() {
                                     variant="outlined"
                                     nowrap="false"
                                     size="small"
+                                    color='primary'
                                     className={classes.TextField}
                                 />
                             </Grid>
@@ -313,7 +316,7 @@ function CreateMeeting() {
                                 spacing={3}
                             >
                                 <Button
-                                    color="secondary"
+                                    color="primary"
                                     variant="contained"
                                     type="submit"
                                     onClick={createMeetingFunction}

@@ -59,13 +59,15 @@ const useStyles = makeStyles((theme) => ({
     },
     heading: {
         textAlign: 'center',
+        color: '#1DA1F1',
         [theme.breakpoints.down('sm')]: {
             fontSize: '32px'
         }
     },
 
     button: {
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        backgroundColor: '#1DA1F1'
     }
 }));
 
@@ -156,7 +158,7 @@ function JoinMeeting(props) {
                         >
                             <Typography
                                 variant="h4"
-                                color="secondary"
+                                color="primary"
                                 component="h4"
                                 className={classes.heading}
                             >
@@ -181,7 +183,7 @@ function JoinMeeting(props) {
                                 id="outlined-basic"
                                 label="Full Name"
                                 variant="outlined"
-                                color="secondary"
+                                color="primary"
                                 size="small"
                             />
                         </Grid>
@@ -193,7 +195,7 @@ function JoinMeeting(props) {
                             spacing={0}
                         >
                             <Button
-                                color="secondary"
+                                color="primary"
                                 variant="contained"
                                 type="submit"
                                 onClick={joinMeetingFunction}

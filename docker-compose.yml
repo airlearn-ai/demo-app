@@ -9,4 +9,4 @@ services:
         container_name: demo-app 
         restart: unless-stopped
         ports:
-            - 3001:3001
+            - 4000:4000
